@@ -16,7 +16,13 @@ router.post('/login', async (req, res) => {
 });
 
 router.post('/logout', auth, async (req, res) => {
-
+    try {
+        req.user.tokens = req.user.tokens.filter(t => t.token !== req.token);
+        await req.user.save();
+        res.send();
+    } catch (ex) {
+        res.status(500).send();
+    }
 });
 
 router.post('', async (req, res) => {
