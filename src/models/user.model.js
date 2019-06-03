@@ -42,11 +42,11 @@ const userSchema = new mongoose.Schema({
     timestamps: true
 });
 
-// userSchema.virtual('habits', {
-//     ref: 'Habit',
-//     localField: '_id',
-//     foreignField: 'owner'
-// });
+userSchema.virtual('habits', {
+    ref: 'Habit',
+    localField: '_id',
+    foreignField: 'owner'
+});
 
 userSchema.methods.toJSON = function() {
     const user = this;

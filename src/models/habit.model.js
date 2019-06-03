@@ -10,6 +10,10 @@ const habitSchema = new mongoose.Schema({
         type: Number,
         required: true
     },
+    thruDate: {
+        type: Date,
+        required: false
+    },
     owner: {
         type: mongoose.Schema.Types.ObjectId,
         required: true,
@@ -18,6 +22,15 @@ const habitSchema = new mongoose.Schema({
 }, {
     timestamps: true
 });
+
+habitSchema.virtual('completions', {
+    ref: 'Completion',
+    localField: '_id',
+    foreignField: 'habit'
+});
+
+// habitSchema.set('toObject', { virtuals: true });
+habitSchema.set('toJSON', { virtuals: true });
 
 const Habit = mongoose.model('Habit', habitSchema);
 

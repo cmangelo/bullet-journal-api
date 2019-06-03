@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const completionSchema = new mongoose.Schema({
-    completionDate: {
+    date: {
         type: Date,
         required: true
     },
@@ -14,6 +14,7 @@ const completionSchema = new mongoose.Schema({
     timestamps: true,    
 });
 
+completionSchema.index({date: 1, habit: 1}, {unique: true});
 
 const Completion = mongoose.model('Completion', completionSchema);
 
