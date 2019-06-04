@@ -14,6 +14,10 @@ const habitSchema = new mongoose.Schema({
         type: Date,
         required: false
     },
+    archived: {
+        type: Boolean,
+        default: false
+    },
     owner: {
         type: mongoose.Schema.Types.ObjectId,
         required: true,

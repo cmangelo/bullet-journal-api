@@ -61,10 +61,36 @@ exports.toggleCompletions = async (req, res) => {
                 completion = new Completion(c);
                 await completion.save();
             } else {
-                await Completion.findByIdAndDelete(completion._id);
+                await completion.remove();
             }
         }
-        res.status(204).send(); // what status code goes here?
+        res.status(204).send();
+    } catch (ex) {
+        res.status(400).send();
+    }
+}
+
+exports.updateHabit = async (req, res) => {
+    const _id = req.params.id;
+    const body = req.body;
+    const updates = Object.keys(body);
+    const allowedUpdates = ['description', 'frequency', 'thruDate', 'archived'];
+    const isValidOperation = updates.every(update => allowedUpdates.includes(update));
+
+    if (!isValidOperation) {
+        return res.status(400).send();
+    }
+
+    try {
+        const habit = await Habit.find({_id, owner: req.user._id});
+        if (!habit) {
+            return res.status(404).send();
+        }
+        updates.forEach(update => habit[update] = req.body[update]);
+        // console.log(habit)
+        await habit.save(); //fix this garbage
+
+        res.send(habit);
     } catch (ex) {
         res.status(400).send();
     }
