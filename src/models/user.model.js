@@ -48,7 +48,7 @@ userSchema.virtual('habits', {
     foreignField: 'owner'
 });
 
-userSchema.methods.toJSON = function() {
+userSchema.methods.toJSON = function () {
     const user = this;
     const userObj = user.toObject();
 
@@ -57,18 +57,24 @@ userSchema.methods.toJSON = function() {
     return userObj;
 }
 
-userSchema.methods.generateAuthToken = async function() {
+userSchema.methods.generateAuthToken = async function () {
     const user = this;
-    const token = jwt.sign({_id: user._id.toString()}, 'bulletjournalapi');
+    const token = jwt.sign({
+        _id: user._id.toString()
+    }, 'bulletjournalapi');
 
-    user.tokens = user.tokens.concat({token});
+    user.tokens = user.tokens.concat({
+        token
+    });
     await user.save();
 
     return token;
 }
 
 userSchema.statics.findByCredentials = async (email, password) => {
-    const user = await User.findOne({email});
+    const user = await User.findOne({
+        email
+    });
     if (!user) {
         throw new Error('No record of this username and password combination exists in our database');
     }
@@ -80,7 +86,7 @@ userSchema.statics.findByCredentials = async (email, password) => {
     return user;
 }
 
-userSchema.pre('save', async function(next) {
+userSchema.pre('save', async function (next) {
     const user = this;
     if (user.isModified('password')) {
         user.password = await bcrypt.hash(user.password, 8);

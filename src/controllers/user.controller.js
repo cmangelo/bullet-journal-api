@@ -4,7 +4,10 @@ exports.loginUser = async (req, res) => {
     try {
         const user = await User.findByCredentials(req.body.email, req.body.password);
         const token = await user.generateAuthToken();
-        res.send({user, token});
+        res.send({
+            user,
+            token
+        });
     } catch (ex) {
         res.status(400).send(ex);
     }
@@ -29,7 +32,10 @@ exports.createUser = async (req, res) => {
     try {
         await user.save();
         const token = await user.generateAuthToken();
-        res.status(201).send({user, token});
+        res.status(201).send({
+            user,
+            token
+        });
     } catch (ex) {
         res.status(400).send(ex);
     }
@@ -43,7 +49,7 @@ exports.updateUser = async (req, res) => {
     const updates = Object.keys(body);
     const allowedUpdates = ['name', 'password'];
     const isValidOperation = updates.every(update => allowedUpdates.includes(update));
-    
+
     if (!isValidOperation) {
         return res.status(400).send();
     }

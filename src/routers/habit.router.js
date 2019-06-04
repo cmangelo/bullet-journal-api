@@ -15,6 +15,6 @@ router.post('', HabitController.createHabit);
 
 router.patch('/completions', HabitController.toggleCompletions);
 
-router.patch('/:id', HabitController.updateHabit)
+router.patch('/:id', HabitController.updateHabit);
 
 module.exports = router;

@@ -5,7 +5,7 @@ const habitSchema = new mongoose.Schema({
         type: String,
         required: true,
         trim: true
-    }, 
+    },
     frequency: {
         type: Number,
         required: true
@@ -34,7 +34,9 @@ habitSchema.virtual('completions', {
 });
 
 // habitSchema.set('toObject', { virtuals: true });
-habitSchema.set('toJSON', { virtuals: true });
+habitSchema.set('toJSON', {
+    virtuals: true
+});
 
 const Habit = mongoose.model('Habit', habitSchema);
 

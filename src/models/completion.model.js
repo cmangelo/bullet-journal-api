@@ -11,10 +11,15 @@ const completionSchema = new mongoose.Schema({
         ref: 'Habit'
     }
 }, {
-    timestamps: true,    
+    timestamps: true,
 });
 
-completionSchema.index({date: 1, habit: 1}, {unique: true});
+completionSchema.index({
+    date: 1,
+    habit: 1
+}, {
+    unique: true
+});
 
 const Completion = mongoose.model('Completion', completionSchema);
 

@@ -26,13 +26,23 @@ exports.getAllHabitsForUser = async (req, res) => {
     if (req.query.fromDate && req.query.toDate) {
         fromDateStamp = new Date(req.query.fromDate).getTime();
         toDateStamp = new Date(req.query.toDate).getTime();
-        match['date'] = { $gte: fromDateStamp, $lte: toDateStamp };
+        match['date'] = {
+            $gte: fromDateStamp,
+            $lte: toDateStamp
+        };
     }
 
     try {
-        let habits = fromDateStamp && toDateStamp 
-            ? await Habit.find({owner: req.user._id}).populate({ path: 'completions', match }).exec()
-            : await Habit.find({owner: req.user._id});
+        let habits = fromDateStamp && toDateStamp ?
+            await Habit.find({
+                owner: req.user._id
+            }).populate({
+                path: 'completions',
+                match
+            }).exec() :
+            await Habit.find({
+                owner: req.user._id
+            });
         if (current) {
             habits = habits.filter(h => !h.thruDate || new Date(h.thruDate).getTime() > new Date().getTime());
         }
@@ -43,7 +53,10 @@ exports.getAllHabitsForUser = async (req, res) => {
 }
 
 exports.createHabit = async (req, res) => {
-    const habit = new Habit({...req.body, owner: req.user._id});
+    const habit = new Habit({
+        ...req.body,
+        owner: req.user._id
+    });
     try {
         await habit.save()
         res.status(201).send(habit);
@@ -56,7 +69,10 @@ exports.toggleCompletions = async (req, res) => {
     const completions = req.body;
     try {
         for (const c of completions) {
-            let completion = await Completion.findOne({date: new Date(c.date), habit: c.habit});
+            let completion = await Completion.findOne({
+                date: new Date(c.date),
+                habit: c.habit
+            });
             if (!completion) {
                 completion = new Completion(c);
                 await completion.save();
@@ -82,7 +98,10 @@ exports.updateHabit = async (req, res) => {
     }
 
     try {
-        const habit = await Habit.find({_id, owner: req.user._id});
+        const habit = await Habit.find({
+            _id,
+            owner: req.user._id
+        });
         if (!habit) {
             return res.status(404).send();
         }
