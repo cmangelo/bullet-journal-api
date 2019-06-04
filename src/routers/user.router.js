@@ -13,6 +13,6 @@ router.get('', auth, UserController.getUser);
 
 router.post('', UserController.createUser);
 
-router.patch('/:id', auth, UserController.updateUser);
+router.patch('', auth, UserController.updateUser);
 
 module.exports = router;

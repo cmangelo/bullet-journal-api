@@ -42,9 +42,8 @@ exports.createUser = async (req, res) => {
 }
 
 exports.updateUser = async (req, res) => {
-    const _id = req.params.id;
     const body = req.body;
-    const oldPassword = body['oldPassword']; //todo: actually validate old password
+    const oldPassword = body['oldPassword'];
     delete body['oldPassword'];
     const updates = Object.keys(body);
     const allowedUpdates = ['name', 'password'];
@@ -55,11 +54,12 @@ exports.updateUser = async (req, res) => {
     }
 
     try {
-        const user = req.user;
+        const user = await User.findByCredentials(req.user.email, oldPassword);
+
         updates.forEach(update => user[update] = body[update]);
         await user.save();
         res.send(user);
     } catch (ex) {
-        res.status(400).send();
+        res.status(400).send(ex);
     }
 }
