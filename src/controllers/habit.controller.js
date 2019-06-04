@@ -98,17 +98,17 @@ exports.updateHabit = async (req, res) => {
     }
 
     try {
-        const habit = await Habit.find({
+        const habit = await Habit.findOne({
             _id,
             owner: req.user._id
         });
         if (!habit) {
             return res.status(404).send();
         }
-        updates.forEach(update => habit[update] = req.body[update]);
-        // console.log(habit)
-        await habit.save(); //fix this garbage
-
+        updates.forEach(update => {
+            habit[update] = req.body[update];
+        });
+        await habit.save();
         res.send(habit);
     } catch (ex) {
         res.status(400).send();
