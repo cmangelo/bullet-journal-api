@@ -80,12 +80,12 @@ userSchema.statics.findByCredentials = async (email, password) => {
         email
     });
     if (!user) {
-        throw new Error('No record of this username and password combination exists in our database');
+        throw new Error('Incorrect email or password');
     }
 
     const isCorrectPassword = await bcrypt.compare(password, user.password);
     if (!isCorrectPassword) {
-        throw new Error('No record of this username and password combination exists in our database');
+        throw new Error('Incorrect email or password');
     }
     return user;
 }

@@ -9,7 +9,7 @@ exports.loginUser = async (req, res) => {
             token
         });
     } catch (ex) {
-        res.status(400).send(ex);
+        res.status(400).send(ex.message);
     }
 }
 
