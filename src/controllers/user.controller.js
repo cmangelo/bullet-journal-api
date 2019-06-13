@@ -37,7 +37,10 @@ exports.createUser = async (req, res) => {
             token
         });
     } catch (ex) {
-        res.status(400).send(ex);
+        let message = ex.code === 11000 ?
+            "An account with this email address already exists." :
+            "Something went wrong."
+        res.status(400).send(message);
     }
 }
 
